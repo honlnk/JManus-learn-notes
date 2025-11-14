@@ -1,0 +1,15 @@
+{
+  "uploadByClipSwitch": true,
+  "uploader": "PicGo",
+  "uploadServer": "your upload server url",
+  "deleteServer": "your delete server url",
+  "imageSizeSuffix": "",
+  "picgoCorePath": "",
+  "workOnNetWork": false,
+  "fixPath": false,
+  "applyImage": true,
+  "newWorkBlackDomains": "",
+  "deleteSource": true,
+  "imageDesc": "origin",
+  "remoteServerMode": true
+}

@@ -1,0 +1,61 @@
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.5);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.7);
+}
+
+/* 深色主题下的滚动条样式 */
+.theme-dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 代码块区域的滚动条 */
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+  -webkit-appearance: none;
+  width: 14px;
+  background: transparent;
+}
+
+/* 图片预览区域的滚动条 */
+.modal .suggestion-container::-webkit-scrollbar,
+.popover .suggestion-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.modal .suggestion-container::-webkit-scrollbar-track,
+.popover .suggestion-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.modal .suggestion-container::-webkit-scrollbar-thumb,
+.popover .suggestion-container::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.4);
+  border-radius: 4px;
+}

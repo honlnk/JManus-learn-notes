@@ -1,0 +1,10 @@
+.obsidian/workspace.json
+.obsidian/workspaces.json
+.obsidian/workspace-mobile.json
+.trash/
+
+.obsidian/plugins/obsidian-image-auto-upload-plugin/data.json
+
+# macOS system files
+.DS_Store
+**/.DS_Store
