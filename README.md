@@ -18,7 +18,7 @@
 
 - [x] **第一阶段：项目概览** (1天) ✅
   - [x] 了解项目整体架构和核心概念 ✅
-  - [ ] 搭建开发环境并运行项目
+  - [x] 搭建开发环境并运行项目 ✅
 
 - [ ] **第二阶段：智能体系统** (2-3天)
   - [ ] 理解 BaseAgent 抽象基类设计
@@ -55,7 +55,9 @@ docs/learning-notes/
 ├── README.md                   # 本文件，学习总览
 ├── 01-project-overview.md      # 项目概览笔记
 ├── 02-agent-system.md          # 智能体系统详解
-├── 03-planning-system.md       # 规划系统详解
+├── 03-environment-setup.md     # 开发环境搭建指南
+├── SpringAI配置说明.md         # Spring AI配置解析（非官方）
+├── 04-planning-system.md       # 规划系统详解
 ├── 04-tool-system.md           # 工具系统详解
 ├── 05-api-design.md            # API 接口设计
 ├── 06-database-design.md       # 数据库设计
@@ -154,4 +156,4 @@ docs/learning-notes/
 
 ---
 
-*最后更新：2025-11-15*
+*最后更新：2025-11-16*
