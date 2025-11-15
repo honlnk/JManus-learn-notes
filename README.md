@@ -16,8 +16,8 @@
 
 ## 📋 学习进度
 
-- [ ] **第一阶段：项目概览** (1天)
-  - [ ] 了解项目整体架构和核心概念
+- [x] **第一阶段：项目概览** (1天) ✅
+  - [x] 了解项目整体架构和核心概念 ✅
   - [ ] 搭建开发环境并运行项目
 
 - [ ] **第二阶段：智能体系统** (2-3天)
@@ -61,10 +61,11 @@ docs/learning-notes/
 ├── 06-database-design.md       # 数据库设计
 ├── 07-advanced-topics.md       # 高级主题
 ├── 08-practice-examples.md     # 实践案例
-├── diagrams/                   # 架构图和流程图
-│   ├── system-architecture.puml
-│   ├── agent-lifecycle.puml
-│   └── tool-execution.puml
+├── diagrams/                   # 架构图和流程图 (Obsidian 白板)
+│   ├── system-architecture.canvas  # 系统整体架构
+│   ├── agent-system.canvas         # 智能体系统详解
+│   ├── tool-system.canvas          # 工具系统架构
+│   ├── data-flow.canvas            # 数据流程分析
 ├── examples/                   # 代码示例
 │   ├── custom-agent/
 │   ├── custom-tool/
@@ -116,21 +117,41 @@ docs/learning-notes/
 - IntelliJ IDEA（推荐）
 - Maven 构建工具
 - Postman（API 测试）
-- PlantUML（图表绘制）
+- Obsidian（白板和笔记）
 
 ---
 
 ## 📝 学习记录
 
-### 重要发现
-- *记录学习过程中的重要发现和见解*
+### ✅ 第一阶段学习成果
+
+#### 重要发现
+1. **企业级架构设计**：JManus 展现了成熟的企业级 AI 系统架构，包含 19 个核心模块
+2. **分层设计思想**：从 API 层到基础设施层的清晰分层，职责明确
+3. **智能体系统核心**：BaseAgent → ReActAgent → DynamicAgent 的三层继承架构
+4. **工具生态系统**：8 大工具类别，支持文件、数据库、浏览器、系统等全方位操作
+5. **数据驱动执行**：完整的数据流架构，从用户请求到响应返回的全链路追踪
+
+#### 获得的可视化资源
+- 📊 4 个详细的 Obsidian 白板架构图
+- 🏗️ 系统整体架构 + 基础设施配置
+- 🤖 智能体系统详解 + 状态管理机制
+- 🔧 工具系统架构 + 生命周期管理
+- 🔄 数据流程分析 + 事件驱动架构
+
+#### 关键技术理解
+- **Spring AI Alibaba**：与阿里云 AI 模型的深度集成
+- **ReAct 模式**：推理-行动的智能体执行模式
+- **响应式编程**：WebFlux + 非阻塞 I/O
+- **多数据库支持**：H2/MySQL/PostgreSQL
+- **MCP 协议**：标准化外部服务集成
 
 ### 问题与解决
-- *记录遇到的问题和解决方案*
+- *学习过程中的问题和解决方案将在此记录*
 
 ### 代码片段
-- *记录有用的代码片段和模式*
+- *有用的代码片段和模式将在此记录*
 
 ---
 
-*最后更新：2025-11-14*
+*最后更新：2025-11-15*

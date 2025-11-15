@@ -20,52 +20,35 @@ JManus 是一个基于 Spring Boot 的 AI 智能体管理系统，提供：
 
 ## 🏗️ 核心架构
 
-### 整体架构图
+### 🎨 系统架构白板图
 
-```mermaid
-graph TB
-    subgraph "API Layer"
-        A[AgentController]
-        B[ManusController]
-        C[ToolController]
-    end
+**详细的系统架构白板已创建** (建议使用 Obsidian 打开 .canvas 文件)：
 
-    subgraph "Service Layer"
-        D[AgentService]
-        E[PlanningService]
-        F[ToolService]
-        G[LlmService]
-    end
+1. **[系统整体架构](diagrams/system-architecture.canvas)** - 完整的系统模块关系和基础设施配置
+   - 包含 19 个核心模块的详细分析
+   - 开发系统级别的配置说明
+   - 性能优化特性和设计模式
 
-    subgraph "Core Components"
-        H[BaseAgent]
-        I[ReActAgent]
-        J[DynamicAgent]
-        K[Tool System]
-        L[Planning System]
-    end
+2. **[智能体系统详解](diagrams/agent-system.canvas)** - BaseAgent、ReActAgent、DynamicAgent 的详细分析
+   - 继承关系和核心方法
+   - 状态管理和生命周期
+   - 错误处理机制和内存管理
 
-    subgraph "Infrastructure"
-        M[JPA/Hibernate]
-        N[H2/MySQL/PostgreSQL]
-        O[Spring AI]
-        P[Playwright]
-    end
+3. **[工具系统架构](diagrams/tool-system.canvas)** - 工具接口、内置工具、执行机制
+   - 8 大工具类别详解
+   - 特殊工具类型和生成式工具
+   - 工具生命周期管理
 
-    A --> D
-    B --> E
-    C --> F
-    D --> H
-    E --> L
-    F --> K
-    H --> I
-    H --> J
-    G --> O
-    K --> P
-    D --> M
-    E --> M
-    M --> N
-```
+4. **[数据流程分析](diagrams/data-flow.canvas)** - 从用户请求到执行完成的完整数据流
+   - 7 个主要执行阶段
+   - 数据结构和处理机制
+   - 事件驱动和一致性保证
+
+**建议学习顺序**：
+1. 先查看 `system-architecture.canvas` 了解整体结构
+2. 然后深入 `agent-system.canvas` 理解智能体核心
+3. 结合 `data-flow.canvas` 理解执行流程
+4. 最后研究 `tool-system.canvas` 了解工具生态
 
 ### 主要模块
 
