@@ -339,15 +339,224 @@ private boolean executeWithRetry(int maxRetries) throws Exception {
 - 处理特殊工具（FormInputTool、TerminableTool）
 - 记录执行结果
 
+## 🔍 实践验证与深度分析
+
+### 启动日志验证
+
+通过 `mvn spring-boot:run` 启动日志验证了我们的理论分析：
+
+```log
+2025-11-16 18:39:39.622  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: browser_use
+2025-11-16 18:39:39.624  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: database_read_use
+2025-11-16 18:39:39.625  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: database_write_use
+2025-11-16 18:39:39.625  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: database_metadata_use
+2025-11-16 18:39:39.626  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: uuid_generate
+2025-11-16 18:39:39.630  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: terminate
+2025-11-16 18:39:39.633  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: bash
+2025-11-16 18:39:39.634  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: local_file_operator
+2025-11-16 18:39:39.635  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: global_file_operator
+2025-11-16 18:39:39.635  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: directory_operator
+2025-11-16 18:39:39.636  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: form_input
+2025-11-16 18:39:39.636  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: parallel_execution_tool
+2025-11-16 18:39:39.637  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: cron_tool
+2025-11-16 18:39:39.638  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registering tool: markdown_converter
+2025-11-16 18:39:39.655  INFO 69970 --- c.a.c.ai.manus.planning.PlanningFactory  : Registered 1 subplan tools
+```
+
+**重要发现**：
+- ✅ 15个核心工具成功注册到 `PlanningFactory`
+- ✅ 动态工具加载机制（每次HTTP请求都重新注册）
+- ✅ 工具名称与代码分析完全一致
+
+### 双层工具系统架构验证
+
+通过实际API测试验证了双层工具系统设计：
+
+```bash
+# 查看内部工具（PlanningFactory）
+curl -X GET "http://localhost:18080/api/tools"
+# 返回15个已注册的内部工具
+
+# 查看外部工具（CoordinatorTool）
+curl -X GET "http://localhost:18080/api/coordinator-tools"
+# 返回启用HTTP服务的工具列表
+```
+
+**架构验证**：
+- ✅ **内层**：PlanningFactory 管理15个核心工具
+- ✅ **外层**：CoordinatorTool 提供HTTP API访问
+- ✅ **访问控制**：只有 `enableHttpService: true` 的工具才能通过API访问
+
+### 状态管理详细分析
+
+#### AgentState 枚举的完整状态
+
+基于 `AgentState.java:18-21` 的最新发现：
+
+```java
+public enum AgentState {
+    NOT_STARTED("not_started"),    // 未开始
+    IN_PROGRESS("in_progress"),    // 执行中
+    COMPLETED("completed"),        // 已完成
+    BLOCKED("blocked"),            // 被阻塞
+    FAILED("failed"),              // 失败
+    INTERRUPTED("interrupted");    // 被中断
+}
+```
+
+**新增状态**：
+- `BLOCKED`：等待外部输入或资源
+- `INTERRUPTED`：用户主动中断
+
+### Think-Act循环的详细实现
+
+#### Think阶段深入分析（DynamicAgent.java:172-350）
+
+**1. 中断检查机制**：
+```java
+if (agentInterruptionHelper != null &&
+    !agentInterruptionHelper.checkInterruptionAndContinue(getRootPlanId())) {
+    throw new TaskInterruptedException();
+}
+```
+
+**2. 环境数据收集**：
+```java
+collectAndSetEnvDataForTools();
+```
+
+**3. 重试机制**：
+```java
+boolean result = executeWithRetry(3);  // 最多3次重试
+```
+
+**4. LLM调用过程**：
+- **系统消息**：`getThinkMessage()` - 包含系统信息和智能体信息
+- **历史记忆**：`ChatMemory` - 管理对话历史
+- **当前环境**：`currentStepEnvMessage()` - 任务上下文信息
+- **流式处理**：`StreamingResponseHandler` - 实时响应处理
+
+**5. 工具选择记录**：
+```java
+List<ActToolParam> actToolInfoList = new ArrayList<>();
+for (ToolCall toolCall : toolCalls) {
+    ActToolParam actToolInfo = new ActToolParam(
+        toolCall.name(),
+        toolCall.arguments(),
+        toolcallId
+    );
+    actToolInfoList.add(actToolInfo);
+}
+// 记录Think-Act过程
+planExecutionRecorder.recordThinkingAndAction(step, paramsN);
+```
+
+#### Act阶段深入分析（DynamicAgent.java:378-417）
+
+**1. 并行工具执行**：
+```java
+Map<String, ToolExecutionResult> toolResults =
+    parallelExecutionService.executeParallel(toolCalls);
+```
+
+**2. 特殊工具处理**：
+- `FormInputTool`：等待用户输入
+- `TerminateTool`：结束执行
+- `ErrorReportTool`：错误报告
+- `SystemErrorReportTool`：系统级错误处理
+
+**3. 结果收集和状态更新**：
+- 收集所有工具执行结果
+- 更新智能体状态
+- 记录执行日志
+
+## 🏗️ 关键设计模式分析
+
+### 1. 模板方法模式（Template Method）
+
+**位置**：`BaseAgent` 抽象类
+**实现**：定义执行框架，子类实现具体逻辑
+
+```java
+// BaseAgent 定义执行流程模板
+public AgentExecResult execute(int maxSteps) {
+    // 模板方法：定义执行骨架
+    for (int currentStep = 1; currentStep <= maxSteps; currentStep++) {
+        AgentExecResult stepResult = step();  // 子类实现具体逻辑
+        // 通用状态检查和处理
+        handleStepResult(stepResult);
+    }
+}
+```
+
+### 2. 策略模式（Strategy Pattern）
+
+**位置**：不同类型的智能体
+**实现**：`BaseAgent`、`ReActAgent`、`DynamicAgent` 不同执行策略
+
+### 3. 工厂模式（Factory Pattern）
+
+**位置**：`PlanningFactory`
+**实现**：统一管理工具注册和获取
+
+### 4. 观察者模式（Observer Pattern）
+
+**位置**：事件系统
+**实现**：`JmanusListener`、事件发布器
+
+## 🔧 性能优化特性
+
+### 1. 并行工具执行
+- **实现**：`ParallelToolExecutionService`
+- **优势**：提高多工具调用效率
+
+### 2. 流式响应处理
+- **实现**：`StreamingResponseHandler`
+- **优势**：实时响应，改善用户体验
+
+### 3. 连接池优化
+- **实现**：HikariCP 数据库连接池
+- **优势**：高效的数据库访问
+
+### 4. 缓存机制
+- **实现**：MCP 缓存、配置缓存
+- **优势**：减少重复计算
+
+## 📊 学习成果总结
+
+### 技术理解深化
+
+1. **智能体架构**：深入理解了三层继承架构的设计思想
+2. **状态管理**：掌握了6种状态的完整生命周期管理
+3. **ReAct 模式**：理解了推理-行动循环的具体实现
+4. **工具系统**：掌握了双层工具系统的架构设计
+5. **API 设计**：理解了 `ManusController` 的关键端点设计
+
+### 实践验证成果
+
+1. **启动验证**：通过启动日志验证了工具注册机制
+2. **API验证**：通过实际调用验证了双层工具系统
+3. **代码跟踪**：通过源码分析验证了理论理解
+4. **日志分析**：通过运行时日志验证了执行流程
+
+### 企业级特性理解
+
+1. **错误恢复**：多层次错误处理和重试机制
+2. **性能优化**：并行执行、流式响应、缓存机制
+3. **监控支持**：详细的执行记录和状态追踪
+4. **配置灵活**：运行时配置和参数调整
+
 ## 📝 学习要点
 
-1. **状态管理**: 理解智能体的生命周期和状态转换
-2. **ReAct 模式**: 掌握思考-行动循环的设计理念
-3. **工具系统**: 学会如何使用和扩展工具
-4. **错误处理**: 理解重试机制和异常处理策略
-5. **流式处理**: 掌握实时响应的实现方式
+1. **状态管理**: 理解智能体的生命周期和状态转换（新增BLOCKED和INTERRUPTED状态）
+2. **ReAct 模式**: 掌握思考-行动循环的设计理念和具体实现
+3. **工具系统**: 理解双层工具系统的架构设计（PlanningFactory + CoordinatorTool）
+4. **错误处理**: 掌握多层次错误处理策略（系统级、LLM级、工具级）
+5. **流式处理**: 理解实时响应的实现方式
+6. **性能优化**: 学习并行执行、缓存机制等优化策略
+7. **设计模式**: 掌握模板方法、策略、工厂、观察者模式的应用
 
 ---
 
 *创建日期：2025-11-14*
-*最后更新：2025-11-14*
+*最后更新：2025-11-16*
