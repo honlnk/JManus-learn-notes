@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"planning-factory","type":"text","text":"## 🏭 PlanningFactory\n\n**中央调度器 & 工具管理中心**\n\n### 核心职责\n- 工具生命周期管理\n- 依赖关系协调  \n- 外部服务集成 (MCP)\n- 基础设施配置\n\n### 位置\n`com.alibaba.cloud.ai.manus.planning`","fontSize":16,"x":-175,"y":-120,"width":300,"height":180,"color":"1"},
+		{"id":"planning-system-title","type":"text","text":"# JManus 规划系统学习\n## 第三阶段核心组件分析","fontSize":24,"fontFamily":"Source Sans Pro","textAlign":"center","x":-225,"y":-500,"width":400,"height":120,"color":"1"},
+		{"id":"core-methods","type":"text","text":"## 🔧 核心方法\n\n### toolCallbackMap() ⭐⭐⭐⭐⭐\n- 工具注册中心\n- 条件性加载 (agentInit)\n- MCP 动态集成\n- 子计划工具支持\n\n### createPlanFinalizer()\n- 后处理管道\n- 结果处理与清理\n- 异常处理\n\n### createRestClient()\n- HTTP 客户端配置\n- 10分钟超时控制","fontSize":14,"x":-940,"y":-300,"width":400,"height":540,"color":"2"},
+		{"id":"agent-relationship","type":"text","text":"## 🔗 与 Agent 包的关系\n\n### 双重角色\n1. **工具提供者** - 为 Agent 提供工具\n2. **基础设施** - 工具生命周期管理\n\n### 协作接口\n```java\npublic interface ToolCallbackProvider {\n    Map<String, PlanningFactory.ToolCallBackContext> \n    getToolCallBackContext();\n}\n```\n\n### 使用场景\n- DynamicAgent 并行工具调用\n- 工具回调映射获取\n- 智能体决策支持","fontSize":14,"x":480,"y":-840,"width":470,"height":580,"color":"4"},
+		{"id":"design-patterns","type":"text","text":"## 🎯 设计模式\n\n### 工厂模式\n- PlanningFactory\n- PlanExecutorFactory\n- PlanningToolFactory\n\n### 策略模式  \n- 执行器动态选择\n- 计划类型判断\n\n### 建造者模式\n- ToolCallBackContext\n- FunctionToolCallback\n\n### 观察者模式\n- 事件发布机制","fontSize":14,"x":1360,"y":-840,"width":300,"height":585,"color":"5"},
+		{"id":"key-insights","type":"text","text":"## 💡 核心洞见\n\n1. **分层架构** - 职责清晰分离\n2. **工厂模式** - 灵活对象创建\n3. **异步执行** - 高并发支持\n4. **接口适配** - 多框架兼容\n5. **状态管理** - 完整生命周期\n6. **依赖注入** - 松耦合设计","fontSize":14,"x":2120,"y":-668,"width":300,"height":240,"color":"6"},
+		{"id":"tool-context","type":"text","text":"## 📦 ToolCallBackContext\n\n**工具回调上下文设计**\n\n```java\nstatic class ToolCallBackContext {\n    ToolCallback toolCallback;           // Spring AI 接口\n    ToolCallBiFunctionDef functionInstance;  // JManus 接口\n}\n```\n\n### 设计优势\n- 接口适配桥接\n- 独立状态管理\n- 类型安全保障","fontSize":14,"x":480,"y":10,"width":580,"height":410,"color":"2"},
+		{"id":"call-flow","type":"text","text":"## 🔄 调用链路\n\n```\nHTTP 请求 \n→ ManusController\n→ PlanningCoordinator\n→ PlanExecutorFactory\n→ DynamicToolPlanExecutor\n→ PlanningFactory\n```\n\n### 关键调用点\n- `ManusController.executePlan()` :638\n- `PlanningCoordinator.executeByPlan()` :69\n- `DynamicAgent.toolCallbackMap` :885","fontSize":14,"x":-245,"y":320,"width":440,"height":420,"color":"3"},
+		{"id":"learning-status","type":"text","text":"## 📚 当前学习状态\n\n### ✅ 已完成\n- PlanningFactory 架构分析\n- 工具注册机制理解  \n- 调用链路梳理\n- Agent 关系分析\n\n### ⏳ 下一步学习\n- PlanTemplateService 模板管理\n- PlanningCoordinator 执行协调\n- 工具系统深度集成","fontSize":14,"x":-297,"y":1040,"width":545,"height":400,"color":"6"}
+	],
+	"edges":[
+		{"id":"title-to-factory","style":"solid","fromNode":"planning-system-title","fromSide":"bottom","toNode":"planning-factory","toSide":"top","color":"1","label":"核心组件"},
+		{"id":"factory-to-methods","style":"solid","fromNode":"planning-factory","fromSide":"left","toNode":"core-methods","toSide":"right","color":"2","label":"核心方法"},
+		{"id":"factory-to-context","style":"solid","fromNode":"planning-factory","fromSide":"right","toNode":"tool-context","toSide":"left","color":"2","label":"内部设计"},
+		{"id":"factory-to-flow","style":"solid","fromNode":"planning-factory","fromSide":"bottom","toNode":"call-flow","toSide":"top","color":"3","label":"执行流程"},
+		{"id":"factory-to-agent","style":"dashed","fromNode":"planning-factory","fromSide":"right","toNode":"agent-relationship","toSide":"left","color":"4","label":"协作关系"},
+		{"id":"agent-to-patterns","style":"solid","fromNode":"agent-relationship","fromSide":"right","toNode":"design-patterns","toSide":"left","color":"5","label":"设计模式"},
+		{"id":"flow-to-status","style":"solid","fromNode":"call-flow","fromSide":"bottom","toNode":"learning-status","toSide":"top","color":"6","label":"学习进度"},
+		{"id":"patterns-to-insights","style":"solid","fromNode":"design-patterns","fromSide":"right","toNode":"key-insights","toSide":"left","color":"6","label":"核心洞见"}
+	]
+}
