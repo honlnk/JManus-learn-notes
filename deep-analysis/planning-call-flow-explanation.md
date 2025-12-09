@@ -2,7 +2,7 @@
 
 ## 📖 概述
 
-本文档详细解释了 JManus 规划系统的完整调用链路，从 HTTP 请求到工具执行的每个环节。配合 `planning-call-flow-detail.canvas` 一起使用，可以更好地理解整个系统的架构和执行流程。
+本文档详细解释了 JManus 规划系统的完整调用链路，从 HTTP 请求到工具执行的每个环节。配合 `../diagrams/planning-call-flow-detail.canvas` 一起使用，可以更好地理解整个系统的架构和执行流程。
 
 ## 🔄 核心调用流程
 

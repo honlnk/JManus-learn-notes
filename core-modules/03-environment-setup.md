@@ -125,7 +125,7 @@ src/main/resources/
 
 **为什么需要排除ChatClientAutoConfiguration？**
 
-1. **自定义架构需求**（来源：项目根目录`SpringAI配置说明.md`）：
+1. **自定义架构需求**（来源：`../resources/spring-ai-config.md`）：
    - JManus实现多智能体协作，需要自定义LLM服务层
    - 避免与Spring AI默认配置冲突
 

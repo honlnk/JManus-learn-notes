@@ -110,8 +110,8 @@ curl -X GET "http://localhost:18080/api/coordinator-tools"
 ### **第5步：文档整理** 📝
 
 **我更新的内容：**
-- 更新了 `02-agent-system.md`，添加深度分析
-- 更新了 `README.md`，标记第二阶段完成
+- 更新了 `../core-modules/02-agent-system.md`，添加深度分析
+- 更新了 `../README.md`，标记第二阶段完成
 - 创建了详细的学习记录
 
 ---

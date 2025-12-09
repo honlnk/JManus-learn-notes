@@ -553,6 +553,6 @@ Spring AI 框架提供的异步 MCP 工具回调提供者：
 - `src/main/java/com/alibaba/cloud/ai/manus/agent/DynamicAgent.java`
 - `src/main/java/com/alibaba/cloud/ai/manus/runtime/executor/DynamicToolPlanExecutor.java`
 - `src/main/java/com/alibaba/cloud/ai/manus/mcp/service/McpConnectionFactory.java`
-- **Canvas 思维导图**: `diagrams/toolcallback-provide-analysis.canvas`
+- **Canvas 思维导图**: `../diagrams/toolcallback-provider-analysis.canvas`
 
 
