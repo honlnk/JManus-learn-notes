@@ -1,3 +1,6 @@
 {
-  "cssTheme": "Tokyo Night"
+  "cssTheme": "Tokyo Night",
+  "baseFontSizeAction": true,
+  "translucency": true,
+  "theme": "obsidian"
 }

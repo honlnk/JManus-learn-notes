@@ -3,5 +3,11 @@
   "attachmentFolderPath": "./Attachment",
   "newLinkFormat": "relative",
   "useMarkdownLinks": true,
-  "newFileLocation": "current"
+  "newFileLocation": "current",
+  "showLineNumber": true,
+  "focusNewTab": false,
+  "defaultViewMode": "source",
+  "strictLineBreaks": false,
+  "propertiesInDocument": "visible",
+  "showIndentGuide": false
 }
