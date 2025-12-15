@@ -10,7 +10,7 @@
 - 具备自定义智能体和工具开发能力
 - 理解企业级 AI 应用的架构设计
 
-### 预计学习时间：2-3周
+### 预计学习时间：3-4周
 
 ---
 
@@ -45,7 +45,14 @@
   - [x] 启动初始化流程
   - **文档**: `deep-analysis/spring-boot-event-initialization.md`, `resources/spring-ai-config.md`
 
-- [ ] **第六阶段：实践项目** (3-5天) 🔄
+- [ ] **第六阶段：配置系统深度分析** (2-3天) ✅
+  - [ ] @ConfigProperty 注解系统设计
+  - [ ] 数据库驱动的配置管理
+  - [ ] 前后端一体化的动态UI生成
+  - [ ] 企业级配置最佳实践
+  - **文档**: `core-modules/06-configuration-system.md`
+
+- [ ] **第七阶段：实践项目** (3-5天) 🔄
   - [ ] 创建自定义智能体
   - [ ] 开发专用工具
   - [ ] 集成外部服务
@@ -62,7 +69,8 @@ docs/learning-notes/
 │   ├── 02-agent-system.md       # 智能体系统详解
 │   ├── 03-environment-setup.md  # 开发环境搭建指南
 │   ├── 04-planning-system.md    # 规划系统详解
-│   └── 05-toolcallback-provider-analysis.md # 工具回调提供者分析
+│   ├── 05-toolcallback-provider-analysis.md # 工具回调提供者分析
+│   └── 06-configuration-system.md # 配置系统深度分析
 ├── deep-analysis/               # 深度技术分析（专题研究）
 │   ├── planning-service-analysis.md # 规划服务核心分析
 │   ├── planning-call-flow-explanation.md # 规划调用链路详解
@@ -159,7 +167,7 @@ docs/learning-notes/
 
 ### 📝 学习成果总结
 
-#### ✅ 前五阶段学习成果
+#### ✅ 前六阶段学习成果
 
 **第一阶段：项目概览**
 - 深入理解了 JManus 的企业级架构设计
@@ -186,6 +194,12 @@ docs/learning-notes/
 - 理解了动态配置系统的实现原理
 - 学习了企业级应用的最佳实践
 
+**第六阶段：配置系统深度分析**
+- 掌握了 @ConfigProperty 注解驱动的元数据设计
+- 理解了数据库驱动的动态配置管理机制
+- 学习了前后端一体化的UI自动生成技术
+- 深入分析了企业级配置管理的最佳实践
+
 #### 🎨 获得的可视化资源
 - **9 个详细的 Obsidian 白板架构图**
   - 系统整体架构 + 基础设施配置
@@ -206,6 +220,9 @@ docs/learning-notes/
 - **MCP 协议**：标准化外部服务集成方案
 - **工厂模式**：在规划和工具系统中的精妙应用
 - **事件驱动**：Spring Boot 应用的启动和初始化机制
+- **元数据驱动架构**：注解驱动的配置和UI自动生成
+- **前后端一体化**：Java注解直接驱动Vue3组件渲染
+- **企业级配置管理**：数据库驱动的动态配置系统
 
 ### 问题与解决
 - *学习过程中的问题和解决方案将在此记录*
